@@ -1,0 +1,183 @@
+
+ 
+<div id="shopify-section-announcement-bar" class="shopify-section section-announcement">
+<div class="announcement-bar" role="region" aria-label="Announcement"><div class="announcement-slide-wrap ">
+   <div class="page-width">
+    <div class="announcement-slide-mask">
+  
+      <ul class="announcement-slide-grouping" style="">
+           {%- for block in section.blocks -%}
+  {%- case block.type -%}
+       {%- when 'announcement' -%}
+    {%- if block.settings.text != blank -%}
+      <li class="announcement-slide h5">
+      <a class="h5" href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+      </li>
+    {%- endif -%}
+{%- endcase -%}
+             {%- endfor -%}
+        </ul>
+    </div>
+</div>
+  </div>
+  </div>
+      
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script>
+  var $slide = $('.announcement-slide'),
+      $slideGroup = $('.announcement-slide-grouping');
+
+  var slidesTotal = ($slide.length - 1),
+      current = 0,
+      isAutoSliding = true;
+
+  var clickSlide = function() {
+    //stop auto sliding
+    window.clearInterval(autoSlide);
+  };
+
+  var updateIndex = function(currentSlide) {
+    if(current === slidesTotal) {
+      current = 0;
+    } else {
+      current++;
+    }
+    transition(current);
+  };
+
+  var transition = function(slidePosition) { 
+      var slidePositionNew = (slidePosition ) * 30;
+      $slideGroup.animate({
+        'top': '-' + slidePositionNew + 'px'
+      });
+  };
+
+  var autoSlide = window.setInterval(updateIndex, 3000);
+</script>
+
+
+</div>
+
+
+
+
+
+
+<style>
+#shopify-section-announcement-bar {
+  z-index: 3;
+  position: fixed;
+  width:100%;
+  top:0px;
+}
+
+.announcement-bar{
+  background: #458eff;
+  border-bottom: 0px solid rgba(var(--color-foreground), 0.08);
+  color: #fff;
+  text-decoration:none;
+}
+
+.announcement-bar__message {
+  text-align: center;
+  padding: .5rem 2rem;
+  margin: 0;
+  letter-spacing: 0.1rem;
+  text-transform:uppercase;
+  font-size: calc(var(--font-heading-scale) * 1.1rem);
+}
+  
+.announcement-slide-wrap {
+  margin: 0 auto 0;
+  width: 100%;
+}
+  
+.announcement-slide-mask {
+  position: relative;
+  overflow: hidden;
+  height: 40px;
+}
+  
+.announcement-slide-grouping {
+  position: relative; 
+  top: 0px; 
+  left: 0;
+  margin: 0;
+  padding: 0;
+}
+  
+.announcement-slide{
+  display:inline-block;
+  height:30px;
+  width:100%;
+  color:#fff;
+  letter-spacing: 0.1rem;
+  text-transform:uppercase;
+  line-height: 38px;
+  text-align: center;
+  text-transform: uppercase;  
+}
+  
+.announcement-bar a{
+  color:#fff;
+  text-transform: uppercase;  
+  text-decoration: none;
+  font-size: 15px;
+}
+  
+.announcement-slide div {
+  display:inline;
+}
+  
+#announcement_countdownTimer,
+#announcement_forDelivery span{
+  font-weight:bold;
+}
+</style>
+
+
+
+
+{% schema %}
+{
+  "name": "Custom announcement bar",
+  "max_blocks": 12,
+  "class": "announcement-bar-section",
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Welcome to our store",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+        },
+        
+
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "default": {
+    "blocks": [
+      {
+        "type": "announcement"
+      }
+    ]
+  }
+}
+{% endschema %}
+
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
